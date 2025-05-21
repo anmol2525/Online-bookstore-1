@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5">
+        <a class="navbar-brand" href="/">Online Bookstore</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/books/availableBooks">Available Books</a></li>
+                <li class="nav-item"><a class="nav-link" href="/books/my">My Books</a></li>
+                <li class="nav-item"><a class="nav-link" href="/books/register">Register Book</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

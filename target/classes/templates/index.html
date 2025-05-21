@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Online Book Store with wide selection of books for teachers and book lovers">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>Book Haven | Your Online Book Store</title>
+
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #1cc88a;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fc;
+            --accent-color: #f6c23e;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .navbar {
+            background-color: var(--dark-color) !important;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            font-weight: 600;
+            padding: 0.5rem 1rem !important;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #224abe 100%);
+            padding: 5rem 0;
+            color: white;
+            border-radius: 0.35rem;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/images/pattern.png') repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-section h1 {
+            font-weight: 800;
+            font-size: 3rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-section p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #17a673;
+            border-color: #17a673;
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        
+        .carousel {
+            border-radius: 0.35rem;
+            overflow: hidden;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            margin: 3rem auto;
+        }
+        
+        .carousel-inner img {
+            height: 500px;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        .carousel-caption {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 0.35rem;
+            padding: 1.5rem;
+            bottom: 3rem;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1.5rem 0 rgba(58, 59, 69, 0.2);
+        }
+        
+        .card-img-top {
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--dark-color);
+        }
+        
+        .card-text {
+            color: #6c757d;
+            margin-bottom: 1.25rem;
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .feature-box {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1.5rem 0 rgba(58, 59, 69, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+        
+        .feature-text {
+            color: #6c757d;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-title {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .footer-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+        
+        .modal-content {
+            border: none;
+            border-radius: 0.35rem;
+        }
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom: none;
+        }
+        
+        .modal-title {
+            font-weight: 700;
+        }
+        
+        .btn-close {
+            filter: invert(1);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-section p {
+                font-size: 1rem;
+            }
+            
+            .carousel-inner img {
+                height: 300px;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/books/}">
+                <i class="fas fa-book-open me-2"></i>Book Breeze
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/books/}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/books/availableBooks}">Available Books</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/books/my}">My Books</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/books/register}">New Book Register</a></li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light me-2"><i class="fas fa-search"></i></a>
+                    <a th:href="@{/auth/login}" class="btn btn-outline-light me-2">
+                        <i class="fas fa-user"></i>
+                        <span th:if="${#authentication} and ${#authentication.isAuthenticated()}" 
+                              class="d-none d-md-inline ms-1" th:text="${#authentication.name}"></span>
+                        <span th:unless="${#authentication} and ${#authentication.isAuthenticated()}" 
+                              class="d-none d-md-inline ms-1">Login</span>
+                    </a>
+                    <a th:href="@{/cart}" class="btn btn-outline-light position-relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section fade-in">
+        <div class="container text-center hero-content">
+            <h1 class="display-4 fw-bold">Discover Your Next Favorite Book</h1>
+            <p class="lead">
+                Explore our vast collection of books, from bestsellers to hidden gems. Whether you're a teacher looking for classroom resources or a book lover seeking your next adventure, we've got you covered.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a th:href="@{/books/availableBooks}" class="btn btn-primary btn-lg px-4">
+                    <i class="fas fa-book me-2"></i>Browse Books
+                </a>
+                <button class="btn btn-outline-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#infoModal">
+                    <i class="fas fa-info-circle me-2"></i>Learn More
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container my-5 py-5 slide-up">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3 class="feature-title">Fast Delivery</h3>
+                    <p class="feature-text">Get your books delivered to your doorstep within 2-3 business days with our reliable shipping partners.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <h3 class="feature-title">Best Prices</h3>
+                    <p class="feature-text">We offer competitive prices and regular discounts to make reading accessible to everyone.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="feature-title">24/7 Support</h3>
+                    <p class="feature-text">Our customer service team is always ready to help with any questions or concerns you may have.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carousel -->
+    <div class="container">
+        <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="2"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/images/book1.jpeg" class="d-block w-100" alt="Book Collection">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>New Arrivals</h5>
+                        <p>Discover our latest additions to the collection</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/book5.jpeg" class="d-block w-100" alt="Book Sale">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Summer Sale</h5>
+                        <p>Up to 50% off on selected titles</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/book3.jpeg" class="d-block w-100" alt="Book Club">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Join Our Book Club</h5>
+                        <p>Get exclusive benefits and monthly picks</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Teacher-Focused Books -->
+    <div class="container my-5 py-5">
+        <h2 class="text-center section-title slide-up">Books Handpicked for Educators</h2>
+        <p class="text-center text-muted mb-5 slide-up">Essential reads for teachers to enhance their classroom experience and professional development</p>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            <!-- Book Cards (4 total) -->
+            <div class="col" th:each="book, iterStat : ${teacherBooks}">
+                <div class="card h-100 slide-up" th:style="'animation-delay: calc(0.1s * ' + ${iterStat.index} + ')'" >
+                    <img th:src="@{${book.image}}" class="card-img-top" th:alt="${book.title}" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${book.title}">Teaching Essentials</h5>
+                        <p class="card-text" th:text="${book.description}">Practical strategies and lesson plans for modern classrooms.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-success">$24.99</span>
+                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    th:data-bs-target="'#modalBook' + ${iterStat.index}">
+                                <i class="fas fa-eye me-1"></i>Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5 slide-up">
+            <a th:href="@{/books/availableBooks}" class="btn btn-primary px-4">
+                <i class="fas fa-book me-2"></i>View All Books
+            </a>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="bg-light py-5 my-5">
+        <div class="container">
+            <h2 class="text-center section-title slide-up">What Our Customers Say</h2>
+            <p class="text-center text-muted mb-5 slide-up">Hear from educators and book lovers who use our service</p>
+            
+            <div class="row g-4">
+                <div class="col-md-4 slide-up">
+                    <div class="testimonial">
+                        <p>"Book Haven has been an incredible resource for me as an educator. Their curated collection of teaching resources has helped me in numerous ways!"</p>
+                        <h5 class="testimonial-author">John Doe</h5>
+                        <p class="testimonial-role">High School Teacher</p>
+                    </div>
+                </div>
+                <div class="col-md-4 slide-up">
+                    <div class="testimonial">
+                        <p>"The summer sale was a game-changer! I stocked up on books for the next semester at an amazing price."</p>
+                        <h5 class="testimonial-author">Jane Smith</h5>
+                        <p class="testimonial-role">College Professor</p>
+                    </div>
+                </div>
+                <div class="col-md-4 slide-up">
+                    <div class="testimonial">
+                        <p>"The platform is easy to use, and the customer service is always there to assist. Highly recommend it to any teacher or book enthusiast!"</p>
+                        <h5 class="testimonial-author">Emily Johnson</h5>
+                        <p class="testimonial-role">Private Tutor</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+    <!-- Newsletter -->
+    <div class="container my-5 py-5 slide-up">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title">Stay Updated</h2>
+                <p class="text-muted mb-4">Subscribe to our newsletter for the latest book releases, promotions, and educational resources</p>
+                <form class="row g-2 justify-content-center">
+                    <div class="col-md-8">
+                        <input type="email" class="form-control form-control-lg" placeholder="Your email address">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-paper-plane me-2"></i>Subscribe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example Modal -->
+    <div class="modal fade" id="modalBook0" tabindex="-1" aria-labelledby="book1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="book1Label">Teaching Essentials</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="/images/book1.jpeg" class="img-fluid rounded" alt="Teaching Essentials">
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="mb-3">$24.99</h4>
+                            <p class="text-muted">This book offers real-world advice and lesson plans tailored to both new and veteran teachers.</p>
+                            <hr>
+                            <h6>Details</h6>
+                            <ul class="list-unstyled">
+                                <li><strong>Author:</strong> Jane Doe</li>
+                                <li><strong>Publisher:</strong> Education Press</li>
+                                <li><strong>Pages:</strong> 320</li>
+                                <li><strong>ISBN:</strong> 978-1234567890</li>
+                                <li><strong>Category:</strong> Education</li>
+                            </ul>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="text-warning me-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-muted">(42 reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Close
+                    </button>
+                    <button class="btn btn-success">
+                        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">About Book Haven</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Book Haven is dedicated to providing quality books at affordable prices, with a special focus on educational resources for teachers and students.</p>
+                    <p>Our mission is to foster a love of reading and learning by making books accessible to everyone.</p>
+                    <hr>
+                    <h6>Why choose us?</h6>
+                    <ul>
+                        <li>Curated selection of educational materials</li>
+                        <li>Competitive pricing and regular discounts</li>
+                        <li>Fast and reliable shipping</li>
+                        <li>Excellent customer service</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="slide-up">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="footer-title">Book Haven</h5>
+                    <p>Your premier destination for books and educational resources. Serving teachers and book lovers since 2010.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li><a th:href="@{/available_books}">Books</a></li>
+                        <li><a href="#">New Releases</a></li>
+                        <li><a href="#">Best Sellers</a></li>
+                        <li><a href="#">Deals</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-title">Customer Service</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="footer-title">Contact Info</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Book Street, Library City, LC 12345</li>
+                        <li><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@bookhaven.com</li>
+                        <li><i class="fas fa-clock me-2"></i> Mon-Fri: 9AM - 6PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright text-center">
+                <p class="mb-0">&copy; 2023 Book Haven. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Add animation to elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.slide-up, .fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                if (el.classList.contains('slide-up')) {
+                    el.style.transform = 'translateY(20px)';
+                }
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
